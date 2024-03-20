@@ -46,6 +46,16 @@ ActiveRecord::Schema[7.0].define(version: 2024_03_17_175320) do
     t.index ["user_id"], name: "index_favorite_cosmetics_on_user_id"
   end
 
+  create_table "preferences", force: :cascade do |t|
+    t.bigint "user_id"
+    t.string "skin_type", null: false
+    t.string "skin_trouble", null: false
+    t.integer "age_group", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_preferences_on_user_id"
+  end
+
   create_table "profiles", force: :cascade do |t|
     t.bigint "user_id"
     t.string "name"
@@ -98,16 +108,19 @@ ActiveRecord::Schema[7.0].define(version: 2024_03_17_175320) do
     t.string "provider"
     t.string "uid"
     t.string "name"
+    t.string "email", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "avatar"
     t.boolean "receive_notifications_weather", default: false
     t.boolean "receive_notifications_expiration_date", default: false
+    t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["provider", "uid"], name: "index_users_on_provider_and_uid", unique: true
   end
 
   add_foreign_key "cosmetic_usages", "users"
   add_foreign_key "favorite_cosmetics", "users"
+  add_foreign_key "preferences", "users"
   add_foreign_key "profiles", "addresses"
   add_foreign_key "profiles", "users"
   add_foreign_key "review_tags", "reviews"
